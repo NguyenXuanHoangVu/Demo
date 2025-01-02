@@ -1,0 +1,11 @@
+package com.example.demo.repositories;
+
+import com.example.demo.models.NhanVien; //import class nhanVien
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository; // import JPA repo
+// nhanVienRepo kế thừa các phương thức của JPA Repo
+public interface NhanVienRepository extends JpaRepository<NhanVien, Long>{ 
+	 List<NhanVien> findByNameContainingIgnoreCase(String name);
+}
