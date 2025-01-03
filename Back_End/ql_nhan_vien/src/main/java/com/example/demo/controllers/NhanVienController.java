@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired; //Cho phép Dependency Injection 
+import com.example.demo.service.QlNhanVienServices;
+import org.springframework.beans.factory.annotation.Autowired; //Cho phép Dependency Injection
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,54 +22,39 @@ import com.example.demo.repositories.NhanVienRepository;
 public class NhanVienController {
     @Autowired
     private NhanVienRepository nhanVienRepo;
+    private QlNhanVienServices qlNhanVienServices;
     
     @GetMapping //Lấy dữ liệu
-    public ResponseEntity<List<NhanVien>> getAll(){
-        return ResponseEntity.ok(nhanVienRepo.findAll());
+    public ResponseEntity<List<NhanVien>> getAllUser(){
+        return qlNhanVienServices.getAll();
         //Trả về trạng thái ok (200) và danh sách nhân viên
     }
     
     @GetMapping("/{id}") // Lấy dữ liệu theo id
     public ResponseEntity<NhanVien> getEmployeeById(@PathVariable Long id) {
-        NhanVien nv = nhanVienRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy nhân viên với mã " + id ));
-        return ResponseEntity.ok(nv);
+        return qlNhanVienServices.getEmployeeById(id);
     }
     
-    @GetMapping("/search") public ResponseEntity<List<NhanVien>> searchEmployees(@RequestParam String name) 
+    @GetMapping("/search")
+    public ResponseEntity<List<NhanVien>> searchEmployees(@RequestParam String name)
     { 
-    	List<NhanVien> employees = nhanVienRepo.findByNameContainingIgnoreCase(name); 
-    	return ResponseEntity.ok(employees); 
+    	return qlNhanVienServices.searchEmployees(name);
     	}
     
     @PostMapping // Thêm dữ liệu
     public ResponseEntity<NhanVien> addNv(@Valid @RequestBody NhanVien nv) {
-        NhanVien nvm = nhanVienRepo.save(nv);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nvm);
+        return qlNhanVienServices.addNv(nv);
     } // trả về trạng thái created(201) và nhân viên vừa tạo
     
     @PutMapping("/{id}") // Chỉnh sửa dữ liệu theo id
     public ResponseEntity<NhanVien> updateNv(@PathVariable Long id, @Valid @RequestBody NhanVien nhanVienDetails) {
         // @PathVariable để gán id vào {id}
         // @RequestBody để gắn dữ liệu gửi đi vào nhanVienDetails
-        NhanVien nv = nhanVienRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy nhân viên với mã " + id ));
-        // Tìm nhân viên theo mã id ban đầu. Nếu không có thì thông báo không tìm thấy
-        nv.setName(nhanVienDetails.getName());
-        nv.setEmail(nhanVienDetails.getEmail());
-        // update thông tin của nhân viên đã tìm thấy bằng dữ liệu từ nhanVienDetails
-        NhanVien unv = nhanVienRepo.save(nv);// Lưu thông tin của nhân viên vừa sửa vào database
-        return ResponseEntity.ok(unv); 
-        // Trả về trạng thái ok(200) và thông tin nhân viên đã cập nhập
+        return qlNhanVienServices.updateNv(id,nhanVienDetails);
     }
     
     @DeleteMapping("/{id}")// Xóa nhân viên theo id
     public ResponseEntity<Void> deleteNv(@PathVariable Long id) {
-        if(!nhanVienRepo.existsById(id)) { // Kiểm tra có nhân viên nào có id này không
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
-            // Nếu không có thì trả về trạng thái 404
-        }
-        nhanVienRepo.deleteById(id);// Xóa nhân viên có id đã nhập
-        return ResponseEntity.noContent().build(); // Trả về trạng thái trống để biểu thị đã xóa
+        return qlNhanVienServices.deleteNv(id);
     }
 }
