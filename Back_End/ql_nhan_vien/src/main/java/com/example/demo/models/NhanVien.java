@@ -43,11 +43,14 @@ public class NhanVien {
 	
 	public NhanVien() {}// Constructor 
 	
-	public NhanVien(String name, String phoneNumber, Date birthday, String email, NhanVienRole role) {
+	public NhanVien(String name, String phoneNumber, Date birthday, String email, String position, String username, String password, NhanVienRole role) {
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.birthday = birthday;
 		this.email = email;
+		this.position = position;
+		this.username = username;
+		this.password = password;
 		this.role = role;
 	} // Constructor có tham số
 
@@ -80,6 +83,24 @@ public class NhanVien {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public NhanVienRole getRole() {return role;}
 	public  void setRole(NhanVienRole role) {this.role = role;}
