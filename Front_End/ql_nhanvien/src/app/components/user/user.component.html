@@ -1,0 +1,33 @@
+<header>
+    <app-counter (searchResults)="updateSearchResults($event)"></app-counter> <!-- Counter for employee count -->
+    <nav>
+      <h1>DANH SÁCH NHÂN VIÊN</h1>
+      <button routerLink="/create">Thêm</button>
+    </nav>
+  </header>
+  <table>
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Tên</th>
+        <th>Ngày sinh</th>
+        <th>Email</th>
+        <th>Chức vụ</th>
+        <th>Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Conditionally display the employee list or search results -->
+      <tr *ngFor="let employee of (searchResults.length > 0 ? searchResults : employees); let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ employee.name }}</td>
+        <td>{{ employee.birthday }}</td>
+        <td>{{ employee.email }}</td>
+        <td>{{ employee.position }}</td>
+        <td>
+          <button [routerLink]="['/detail', employee.id]">Chi tiết</button> <!-- Edit button -->
+        </td>
+      </tr>
+    </tbody>  
+  </table>
+  
