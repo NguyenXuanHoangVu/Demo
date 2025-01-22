@@ -1,0 +1,33 @@
+Comment
+Exception Handling:
+
+The handleException method is a simple utility to print the exception's message and stack trace to the console.
+This can be useful for logging errors during development.
+
+Export to Excel:
+
+The exportToExcel method creates an Excel workbook using Apache POI.
+
+It accepts a list of data (each String[] represents a row) and headers for the columns.
+
+It creates the workbook and sheet, sets the header row, and fills in the data rows.
+
+The method returns the created workbook.
+
+Call Other API:
+
+The callApi method uses RestTemplate to call an external API.
+
+It takes the URL, HTTP method, payload, and headers as parameters.
+
+It creates an HttpEntity with the payload and headers, then makes the API call using exchange method.
+
+The method returns the response from the API as a ResponseEntity<String>.
+
+Validation:
+
+The validate method checks if there are validation errors in a BindingResult.
+
+If errors are present, it collects the error messages for each field and joins them into a single string.
+
+It returns this string of error messages, or null if there are no errors.

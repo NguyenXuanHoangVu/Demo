@@ -1,18 +1,44 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
+import { importProvidersFrom, APP_INITIALIZER } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
-import { routes } from './app/app.routes';
-import { appConfig } from './app/app.config';
-import { importProvidersFrom } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
+import { AppComponent } from './app/app.component';
+import { routes } from './app/app-routing.module';
+import { appConfig } from '../src/app/app.config';
 
-// Combine all configurations in one bootstrapApplication call
+// Define your Keycloak configuration
+const keycloakConfig = {
+  url: 'http://localhost:8080/',
+  realm: 'Demo',
+  clientId: 'frontend-client'
+};
+
+
+const initializeKeycloak = (keycloak: KeycloakService) => {
+  return () =>
+    keycloak.init({
+      config: keycloakConfig,
+      initOptions: {
+        onLoad: 'login-required',
+        checkLoginIframe: false
+      }
+    });
+};
+
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(FormsModule),
+    importProvidersFrom(FormsModule, KeycloakAngularModule),
     provideHttpClient(), // Provide HttpClient globally
     provideRouter(routes), // Provide the routes
-    ...appConfig.providers, // Include any other app-level configurations
+    KeycloakService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
+    },
+    ...appConfig.providers // Include any other app-level configurations
   ],
 }).catch((err) => console.error(err));

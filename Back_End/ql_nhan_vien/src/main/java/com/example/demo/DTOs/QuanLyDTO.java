@@ -1,4 +1,4 @@
-package com.example.demo.models.DTOs;
+package com.example.demo.DTOs;
 
 import com.example.demo.models.NhanVienRole;
 

@@ -1,4 +1,4 @@
-package com.example.demo.models.DTOs;
+package com.example.demo.DTOs;
 
 import java.util.Date;
 // Du lieu cho nguoi dung thuong

@@ -1,9 +1,8 @@
-package com.example.demo.repositories;
+package com.example.demo.mapper;
 
-import com.example.demo.models.DTOs.NhanVienDTO;
-import com.example.demo.models.DTOs.QuanLyDTO;
+import com.example.demo.DTOs.NhanVienDTO;
+import com.example.demo.DTOs.QuanLyDTO;
 import com.example.demo.models.NhanVien;
-import org.apache.catalina.User;
 
 public class Mapping {
 

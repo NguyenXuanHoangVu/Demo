@@ -1,18 +1,25 @@
 package com.example.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
-@Configuration // class config cua springboot
-public class CorsConfig implements WebMvcConfigurer{ // trien khai interface WebMvcConfigurer
+import java.util.Arrays;
 
-    //@Override
-    public void corsMapping(CorsRegistry registry){ //dinh nghia phuong thuc corsMapping
-        registry.addMapping("/**") // ap dung voi tat ca cac endpoint
-                .allowedOrigins("http://localhost:4200") // cho phep ket noi voi Angular
-                .allowedMethods("GET", "POST", "PUT") // chi cho phep doc/them/sua du lieu
-                .allowedHeaders("Content-Type", "Authorization") // chi cho phep 2 loai header nay
-                .allowCredentials(false); // khong cho phep cookies
+@Configuration
+public class CorsConfig {
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:4200");
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }

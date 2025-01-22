@@ -1,6 +1,6 @@
 import { Component, signal, Output, EventEmitter } from '@angular/core';
-import { EmployeeService } from '../../employee.service';
-import { Employee } from '../../models/employee.model';
+import { EmployeeService } from '../../services/employee.service';
+import { Employee } from '../models/employee.model';
 
 @Component({
   selector: 'app-counter',
